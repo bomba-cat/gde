@@ -14,7 +14,9 @@ Start(){
 	echo Done!
 
 	echo Waiting for Gitlab...
-	docker wait gitlab
+	while [ "$(docker inspect --format='{{.State.Running}}' gitlab 2>/dev/null)" != "true" ]; do 
+		sleep 1
+	done
 	echo Fetching root Password...
 	docker exec -it gitlab grep 'Password: ' /etc/gitlab/initial_root_password
 	echo Done!
